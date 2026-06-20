@@ -1,0 +1,6 @@
+Summarize the following text in one sentence. Be faithful to the source and add no new facts.
+
+TEXT:
+{document}
+
+SUMMARY:

@@ -1,0 +1,25 @@
+name: llm-eval-gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  eval-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Unit tests
+        run: pytest -q
+      - name: Eval regression gate
+        # Runs against the mock provider by default (no API keys needed in CI).
+        # To gate against a real model, set provider in the suite + add a secret:
+        #   --judge-provider anthropic --judge-model <model>
+        # env: { ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }} }
+        run: python -m llm_eval gate suites/summarize.json

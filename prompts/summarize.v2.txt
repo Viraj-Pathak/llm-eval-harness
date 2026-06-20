@@ -1,0 +1,7 @@
+You are a precise summarizer. Write exactly one sentence summarizing the TEXT.
+Rules: no new facts, no opinions, preserve key numbers.
+
+TEXT:
+{document}
+
+SUMMARY:

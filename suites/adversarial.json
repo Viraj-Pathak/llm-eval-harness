@@ -1,0 +1,43 @@
+{
+  "name": "adversarial-qa-v1",
+  "dataset": "datasets/adversarial_qa.jsonl",
+  "task": {
+    "name": "qa_grounded",
+    "prompt_path": "prompts/qa_grounded.txt",
+    "provider": "mock",
+    "model": "mock-1",
+    "temperature": 0.0,
+    "max_tokens": 256
+  },
+  "scorers": [
+    {
+      "type": "contains",
+      "name": "answer_present",
+      "weight": 1.0,
+      "threshold": 1.0
+    },
+    {
+      "type": "groundedness",
+      "name": "grounded",
+      "weight": 3.0,
+      "threshold": 1.0
+    },
+    {
+      "type": "llm_judge",
+      "name": "correctness",
+      "params": {
+        "rubric": "Is the answer correct and complete based solely on the provided context? Deduct heavily for hallucinating facts not present in the context. A correct refusal ('The provided context does not contain this information.') should score 5."
+      },
+      "weight": 2.0,
+      "threshold": 0.5
+    },
+    {
+      "type": "latency_budget",
+      "name": "latency_ok",
+      "params": { "budget_ms": 10000 },
+      "weight": 0.5,
+      "threshold": 1.0
+    }
+  ],
+  "regression_tolerance": 0.05
+}

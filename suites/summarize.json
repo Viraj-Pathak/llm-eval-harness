@@ -1,0 +1,19 @@
+{
+  "name": "summarization-v1",
+  "dataset": "datasets/summarization_golden.jsonl",
+  "task": {
+    "name": "summarize",
+    "prompt_path": "prompts/summarize.v1.txt",
+    "provider": "mock",
+    "model": "mock-1",
+    "temperature": 0.0,
+    "max_tokens": 256
+  },
+  "scorers": [
+    { "type": "contains", "name": "mentions_key_term", "weight": 1.0, "threshold": 1.0 },
+    { "type": "regex", "name": "single_paragraph", "params": { "pattern": "^[^\\n]+$" }, "weight": 0.5, "threshold": 1.0 },
+    { "type": "llm_judge", "name": "faithfulness", "params": { "rubric": "Does the summary accurately reflect the source without adding facts?" }, "weight": 2.0, "threshold": 0.5 },
+    { "type": "groundedness", "name": "grounded", "weight": 2.0, "threshold": 1.0 }
+  ],
+  "regression_tolerance": 0.03
+}
